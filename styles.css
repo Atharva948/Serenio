@@ -876,6 +876,8 @@ input:checked + .slider:before {
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    position: fixed;
+    bottom: 100px;
 }
 
 .chat-input {
@@ -886,6 +888,7 @@ input:checked + .slider:before {
     font-size: 1rem;
     outline: none;
     transition: border-color 0.3s ease;
+    width: 300px;
 }
 
 .chat-input:focus {
@@ -1592,3 +1595,4 @@ input:checked + .slider:before {
 .gap-1 { gap: 1rem; }
 
 .w-full { width: 100%; }
+
