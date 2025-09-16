@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serenio - Mood Check</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="page-container">
+        <!-- Header -->
+        <div class="app-header">
+            <button class="btn-secondary btn-small" onclick="window.location.href='dashboard.html'">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1 class="header-title">Mood Check</h1>
+            <div></div>
+        </div>
+
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Mood Check Questions -->
+            <div id="moodQuestions" class="mood-questions">
+                <!-- Question 1: Overall Mood -->
+                <div class="card mood-question">
+                    <h3>How are you feeling today overall?</h3>
+                    <div class="emoji-selector">
+                        <div class="emoji-option" data-value="1" onclick="selectEmoji(this, 'overall')">😔</div>
+                        <div class="emoji-option" data-value="2" onclick="selectEmoji(this, 'overall')">😐</div>
+                        <div class="emoji-option" data-value="3" onclick="selectEmoji(this, 'overall')">😊</div>
+                        <div class="emoji-option" data-value="4" onclick="selectEmoji(this, 'overall')">😄</div>
+                        <div class="emoji-option" data-value="5" onclick="selectEmoji(this, 'overall')">😁</div>
+                    </div>
+                </div>
+
+                <!-- Question 2: Energy Level -->
+                <div class="card mood-question">
+                    <h3>How is your energy level today?</h3>
+                    <div class="slider-container">
+                        <input type="range" id="energySlider" class="mood-slider" min="1" max="10" value="5" 
+                               oninput="updateSliderValue('energy', this.value)">
+                        <div class="slider-labels">
+                            <span>Low Energy</span>
+                            <span id="energyValue">5</span>
+                            <span>High Energy</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 3: Stress Level -->
+                <div class="card mood-question">
+                    <h3>Are you feeling stressed?</h3>
+                    <div class="emoji-selector">
+                        <div class="emoji-option" data-value="1" onclick="selectEmoji(this, 'stress')">😌</div>
+                        <div class="emoji-option" data-value="2" onclick="selectEmoji(this, 'stress')">🙂</div>
+                        <div class="emoji-option" data-value="3" onclick="selectEmoji(this, 'stress')">😬</div>
+                        <div class="emoji-option" data-value="4" onclick="selectEmoji(this, 'stress')">😰</div>
+                        <div class="emoji-option" data-value="5" onclick="selectEmoji(this, 'stress')">😵</div>
+                    </div>
+                </div>
+
+                <!-- Question 4: Sleep Quality -->
+                <div class="card mood-question">
+                    <h3>How well did you sleep last night?</h3>
+                    <div class="slider-container">
+                        <input type="range" id="sleepSlider" class="mood-slider" min="1" max="10" value="5" 
+                               oninput="updateSliderValue('sleep', this.value)">
+                        <div class="slider-labels">
+                            <span>Poor Sleep</span>
+                            <span id="sleepValue">5</span>
+                            <span>Great Sleep</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 5: Social Connection -->
+                <div class="card mood-question">
+                    <h3>How connected do you feel to others today?</h3>
+                    <div class="emoji-selector">
+                        <div class="emoji-option" data-value="1" onclick="selectEmoji(this, 'social')">😞</div>
+                        <div class="emoji-option" data-value="2" onclick="selectEmoji(this, 'social')">😕</div>
+                        <div class="emoji-option" data-value="3" onclick="selectEmoji(this, 'social')">🙂</div>
+                        <div class="emoji-option" data-value="4" onclick="selectEmoji(this, 'social')">😊</div>
+                        <div class="emoji-option" data-value="5" onclick="selectEmoji(this, 'social')">🥰</div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button class="btn-primary" onclick="calculateMoodResult()" id="submitMoodCheck">
+                    <i class="fas fa-check"></i>
+                    See My Results
+                </button>
+            </div>
+
+            <!-- Mood Results (Hidden by default) -->
+            <div id="moodResults" class="mood-result hidden">
+                <div class="card text-center">
+                    <div class="mood-emoji" id="resultEmoji">😊</div>
+                    <h2 id="resultTitle">Your Mood Today: Good</h2>
+                    <p id="resultDescription">You're doing well today! Keep it up.</p>
+                    
+                    <div class="suggestion-cards">
+                        <div class="suggestion-card">
+                            <h4>💆‍♀️ Recommended for You</h4>
+                            <p id="suggestionText">Try a 5-minute breathing exercise</p>
+                            <button class="btn-secondary" onclick="startBreathingExercise()">
+                                <i class="fas fa-play"></i>
+                                Start Exercise
+                            </button>
+                        </div>
+                        
+                        <div class="suggestion-card">
+                            <h4>💬 Need to Talk?</h4>
+                            <p>Connect with others or get professional support</p>
+                            <div class="flex gap-1">
+                                <button class="btn-secondary btn-small" onclick="window.location.href='anonymous-chat.html'">
+                                    <i class="fas fa-comments"></i>
+                                    Chat Anonymously
+                                </button>
+                                <button class="btn-secondary btn-small" onclick="window.location.href='counselors.html'">
+                                    <i class="fas fa-user-md"></i>
+                                    Find Counselor
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary mt-2" onclick="retakeMoodCheck()">
+                        <i class="fas fa-redo"></i>
+                        Take Another Check
+                    </button>
+                </div>
+            </div>
+
+            <!-- Breathing Exercise Modal -->
+            <div id="breathingModal" class="modal hidden">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>5-Minute Breathing Exercise</h3>
+                        <button class="close-modal" onclick="stopBreathingExercise()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div class="breathing-circle" id="breathingCircle">
+                            <div class="breathing-text" id="breathingText">Get Ready</div>
+                        </div>
+                        <div class="breathing-controls mt-2">
+                            <button id="breathingStartBtn" class="btn-primary" onclick="startBreathing()">
+                                <i class="fas fa-play"></i>
+                                Start
+                            </button>
+                            <button id="breathingStopBtn" class="btn-secondary hidden" onclick="stopBreathing()">
+                                <i class="fas fa-pause"></i>
+                                Stop
+                            </button>
+                        </div>
+                        <div class="breathing-progress mt-1">
+                            <span id="breathingTimer">5:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-container">
+                <a href="dashboard.html" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="chatbot.html" class="nav-item">
+                    <i class="fas fa-robot"></i>
+                    <span>Chatbot</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <script src="mood-check.js"></script>
+</body>
+</html>
