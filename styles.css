@@ -126,7 +126,6 @@ p {
     justify-content: center;
     min-height: 100vh;
     position: relative;
-    overflow: hidden;
 }
 
 .welcome-container {
@@ -1591,4 +1590,5 @@ input:checked + .slider:before {
 .align-center { align-items: center; }
 .justify-center { justify-content: center; }
 .gap-1 { gap: 1rem; }
+
 .w-full { width: 100%; }
